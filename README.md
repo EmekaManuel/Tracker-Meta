@@ -2,69 +2,122 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
+### Expense Tracker Github Tutorial.
 
-### `npm start`
+# install dependencies - npm i (bootstrap / uuid / react-icons)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+-- app.js - import 'bootstrap/dist/css/bootstrap.min.css'
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Step 1.#  create the three components which would contain the Budget, Remaining and Total Expenses Value
 
-### `npm test`
+#Step 2.# Create the Expense List Componen. 
+	- create a dummy array list of items eg.
+	const expenses = [
+        {id: 12, name: Grocery, cost: 50},
+        {id: 13, name: Beverages, cost: 700},
+        {id: 14, name: Airtime, cost: 100},
+    ]
+	now render the jsx (return)
+	<ul>
+	{expenses.map((individualExpense) => {
+	return (
+	<ExpenseItem id = {individualExpense.id} name = {individualExpense.name} cost = {individualExpense.cost}
+	))}
+	 </ul>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#Step 3.# Create the ExpenseItem Component from Step 2. This would be how the data gotten from ExpenseList would be displayed in the UX
+	- it would accept props from ExpenseList
+	
+#Step 4.# Create the AddExpenseForm component
+	- eg.  <div className="col-sm">
+            	  <label htmlFor="name">Name</label>
+           	  <input type="text" required className='form-control' id='name' />
+               </div>
 
-### `npm run build`
+#Step 5.# Create a Context component that'll hold the global states - 
+	- create the initial states of the items on the list
+	- import createContext from react
+	- export the component and assign it to the createContext hook 
+	- create AppProvider function which would accept props. It literally holds the state and passes it to the components. to hold the state, the useReducer hook is used.
+	- import useReducer hook. The useReducer hook accepts gives us the current state and a dispatch func which would be used to update the state(dispatch actions)...similar to the useState hook.
+	- whenever the useReducer is called, it accepts a reducer (AppReducer) and an initial state whenever the app first renders / runs.
+	- create the AppReducer...this is in charge of updatimg the state based on certain actions that it rceives. This accepts the cirrent global state which is passed in by react and an action courtesy of the dispatch. 
+	 The reducer uses a switch statement to determine how to update the state which depends on what is stated in the (action.type).
+	- Lastly you have to return some of the state objects from the AppProvider so that the connected components can get access to them. These include the budget, expenses and dispatch. Also ensure to include {props.children} to take care of nested components.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#Step 6.# import the AppProvider in App.js. Create an <AppProvider> tag, close it and wrap all pre-existing jsx into it.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#Step 7.# Now that the context is setup, we begin to make changes to each component
+	- import useContext into the component eg Budget.jsx
+	- import AppContext into the component
+	- using useContext, import the data from AppContext eg. const {budget} = useContext(AppContext)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+	- apply same method to remaining.jsx
+	- now the budget and expense would be needed eg const {budget, expense} = useContext(AppContext)
+	- create a totalExpense variable
+	- const totalExpense = expense.reduce((total, item) => {
+	return (
+	(total = total + item.cost)
+	}}, 0) 
 
-### `npm run eject`
+#Step 8.# Adding a new data to the list. we make use of the useState hook.
+	Setting the init state values as empty strings. Add a value propertyto the input which would be same as the initial state name
+	Include an onchange function to take care of modifying the state. eg onChange={(event) => setCost(event.target.value)}
+	Import AppContext. Using useContext(AppContext) inport the dispatch. This is because you want to make changes to the existing state.
+	Create a new expense list, setting the id to uuidv4, name to name and cost to parseInt(cost) --- x1
+	Create the dispatch function which would take in objects type and payload eg.  type: 'ADD_EXPENSE', payload: expense. --- x2
+	Note: x1 and x2 are contained in the onSubmit function
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+	Add the dispatch type as a case to theswitch in AppContext
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#Step 9.# Deleting an ExpenseItem
+	- import AppContext and useContext in the ExpenseItem componen. Bring in the {dispatch} due to changes to be made to existing state.
+	- create the delete function passing in the dispatch which would accept action type and payload as objects eg.
+	const handleDelete = () => {
+	dispatch({
+	type: DELETE_EXPENSE,
+	payload: props.id
+	})
+	}
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+	create the delete case in the AppContext eg
+	case DELETE_EXPENSE: 
+	return (
+	...state,
+	expenses: state.filter((expense) => {
+	return (
+	expense.id !== action.payload
+	)})
+	)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+	
+	
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+
+
+
+
+
+
+
+
+
+
+
