@@ -31,11 +31,11 @@ Create the Expense List Componen.
 	))}
 	 </ul>
 
-###Step 3.
+### Step 3.
 Create the ExpenseItem Component from Step 2. This would be how the data gotten from ExpenseList would be displayed in the UX
 	- it would accept props from ExpenseList
 	
-Step 4.
+### Step 4.
 Create the AddExpenseForm component
 
 	  <div className="col-sm">
@@ -43,7 +43,7 @@ Create the AddExpenseForm component
              <input type="text" required className='form-control' id='name' />
           </div>
 
-###Step 5.
+### Step 5.
 Create a Context component that'll hold the global states - 
 	- create the initial states of the items on the list
 	- import createContext from react
@@ -73,7 +73,7 @@ Now that the context is setup, we begin to make changes to each component
 	(total = total + item.cost)
 	}}, 0) 
 
-###Step 8.
+### Step 8.
 Adding a new data to the list. we make use of the useState hook.
 	Setting the init state values as empty strings. Add a value propertyto the input which would be same as the initial state name
 	Include an onchange function to take care of modifying the state. eg onChange={(event) => setCost(event.target.value)}
@@ -84,7 +84,7 @@ Adding a new data to the list. we make use of the useState hook.
 
 	Add the dispatch type as a case to theswitch in AppContext
 
-###Step 9.
+### Step 9.
 Deleting an ExpenseItem
 	- import AppContext and useContext in the ExpenseItem componen. Bring in the {dispatch} due to changes to be made to existing state.
 	- create the delete function passing in the dispatch which would accept action type and payload as objects eg.
