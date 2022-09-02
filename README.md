@@ -9,9 +9,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 -- app.js - import 'bootstrap/dist/css/bootstrap.min.css'
 
-# Step 1.#  create the three components which would contain the Budget, Remaining and Total Expenses Value
+# Step 1.
+create the three components which would contain the Budget, Remaining and Total Expenses Value
 
-#Step 2.# Create the Expense List Componen. 
+#Step 2.
+Create the Expense List Componen. 
 	- create a dummy array list of items eg.
 	const expenses = [
         {id: 12, name: Grocery, cost: 50},
